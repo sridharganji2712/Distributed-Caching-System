@@ -8,11 +8,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LFUCacheEvictionService implements CacheEvictionService {
 
-    //private static final int MAX_SIZE = 3;
+  
 
     private final int maxSize;
 
-    // add this constructor
     public LFUCacheEvictionService(int maxSize) {
         this.maxSize = maxSize;
     }
