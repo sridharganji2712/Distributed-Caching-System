@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cache-config
+  namespace: distributed-cache
+data:
+  CACHE_EVICTION_STRATEGY_NODE1: "lru"
+  CACHE_EVICTION_STRATEGY_NODE2: "lru"
+  CACHE_EVICTION_STRATEGY_NODE3: "lfu"
+  CACHE_MAX_SIZE_NODE1: "10000"
+  CACHE_MAX_SIZE_NODE2: "10000"
+  CACHE_MAX_SIZE_NODE3: "10000"
+  SPRING_DATA_MONGODB_URI: "mongodb://mongodb-service:27017/cachedb"

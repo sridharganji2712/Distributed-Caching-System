@@ -1,0 +1,363 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0f1117;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+.dashboard h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #00e5ff;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+}
+
+/* Tab Navigation */
+.tab-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #2a2d3a;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid #2a2d3a;
+  color: #aaaaaa;
+  padding: 8px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  border-color: #00e5ff;
+  color: #00e5ff;
+}
+
+.tab-btn.active {
+  background: #00e5ff;
+  color: #0f1117;
+  border-color: #00e5ff;
+  font-weight: bold;
+}
+
+/* Cluster Visualizer */
+.cluster-visualizer {
+  background: #1a1d27;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #2a2d3a;
+}
+
+.cluster-visualizer h2,
+.control-panel h2,
+.terminal h2 {
+  color: #00e5ff;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nodes-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.node-card {
+  background: #22253a;
+  border: 2px solid #2a2d3a;
+  border-radius: 10px;
+  padding: 15px;
+  width: 30%;
+  min-width: 140px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.node-card.healthy { border-color: #4CAF50; }
+.node-card.dead { border-color: #f44336; opacity: 0.7; }
+
+.node-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.node-header h3 { color: #ffffff; font-size: 1rem; }
+
+.node-card p {
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  margin-bottom: 6px;
+}
+
+.node-card p strong { color: #ffffff; }
+
+.status-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.green { background-color: #4CAF50; box-shadow: 0 0 8px #4CAF50; }
+.red { background-color: #f44336; box-shadow: 0 0 8px #f44336; }
+
+.card-buttons {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.btn-kill {
+  background: #f44336;
+  color: white;
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.btn-kill:hover:not(:disabled) { background: #c62828; }
+
+.btn-start {
+  background: #4CAF50;
+  color: white;
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.btn-start:hover:not(:disabled) { background: #2e7d32; }
+
+button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* Stats Panel */
+.stats-panel {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #1a1d27;
+  border: 1px solid #2a2d3a;
+  border-radius: 10px;
+  padding: 15px 20px;
+  flex: 1;
+  text-align: center;
+}
+
+.stat-card h3 {
+  color: #aaaaaa;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.stat-card.wide { flex: 2; }
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.stat-number.hits { color: #4CAF50; }
+.stat-number.misses { color: #f44336; }
+
+.ratio-bar-container {
+  background: #2a2d3a;
+  border-radius: 10px;
+  height: 12px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+
+.ratio-bar {
+  background: linear-gradient(90deg, #4CAF50, #00e5ff);
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.ratio-label {
+  color: #aaaaaa;
+  font-size: 0.85rem;
+}
+
+/* Control Panel */
+.control-panel {
+  background: #1a1d27;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #2a2d3a;
+}
+
+.input-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.input-group input,
+.input-group select {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #2a2d3a;
+  background: #22253a;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus { border-color: #00e5ff; }
+
+.input-group select option { background: #22253a; }
+
+.button-group { display: flex; gap: 10px; }
+
+.btn-put {
+  background: #1565c0;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.btn-put:hover { background: #0d47a1; }
+
+.btn-get {
+  background: #00695c;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.btn-get:hover { background: #004d40; }
+
+.btn-delete {
+  background: #6a1b9a;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.btn-delete:hover { background: #4a148c; }
+
+/* Terminal Log */
+.terminal {
+  background: #1a1d27;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid #2a2d3a;
+}
+
+.log-output {
+  background: #0f1117;
+  border-radius: 6px;
+  padding: 15px;
+  height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.log-line {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  color: #aaaaaa;
+  line-height: 1.5;
+}
+
+.log-success { color: #4CAF50; }
+.log-error   { color: #f44336; }
+.log-chaos   { color: #ff9800; }
+.log-recovery { color: #00e5ff; }
+.log-empty   { color: #555555; font-style: italic; }
+
+/* Node Logs Grid */
+.node-logs-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.node-log-window {
+  background: #1a1d27;
+  border: 1px solid #2a2d3a;
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.node-log-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #2a2d3a;
+}
+
+.node-log-header h3 {
+  color: #00e5ff;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.node-log-output {
+  background: #0f1117;
+  border-radius: 6px;
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

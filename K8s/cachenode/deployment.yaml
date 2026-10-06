@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node1
+  namespace: distributed-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node1
+  template:
+    metadata:
+      labels:
+        app: node1
+    spec:
+      containers:
+        - name: cachenode
+          image: distributedcache-cachenode:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+          env:
+            - name: SERVER_PORT
+              value: "8081"
+            - name: CACHE_EVICTION_STRATEGY
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: CACHE_EVICTION_STRATEGY_NODE1
+            - name: CACHE_MAX_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: CACHE_MAX_SIZE_NODE1
+          readinessProbe:
+            httpGet:
+              path: /api/v1/cache/health
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/v1/cache/health
+              port: 8081
+            initialDelaySeconds: 60
+            periodSeconds: 10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node2
+  namespace: distributed-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node2
+  template:
+    metadata:
+      labels:
+        app: node2
+    spec:
+      containers:
+        - name: cachenode
+          image: distributedcache-cachenode:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          env:
+            - name: SERVER_PORT
+              value: "8082"
+            - name: CACHE_EVICTION_STRATEGY
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: CACHE_EVICTION_STRATEGY_NODE2
+            - name: CACHE_MAX_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: CACHE_MAX_SIZE_NODE2
+          readinessProbe:
+            httpGet:
+              path: /api/v1/cache/health
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/v1/cache/health
+              port: 8082
+            initialDelaySeconds: 60
+            periodSeconds: 10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node3
+  namespace: distributed-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node3
+  template:
+    metadata:
+      labels:
+        app: node3
+    spec:
+      containers:
+        - name: cachenode
+          image: distributedcache-cachenode:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8083
+          env:
+            - name: SERVER_PORT
+              value: "8083"
+            - name: CACHE_EVICTION_STRATEGY
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: CACHE_EVICTION_STRATEGY_NODE3
+            - name: CACHE_MAX_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: CACHE_MAX_SIZE_NODE3
+          readinessProbe:
+            httpGet:
+              path: /api/v1/cache/health
+              port: 8083
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /api/v1/cache/health
+              port: 8083
+            initialDelaySeconds: 60
+            periodSeconds: 10

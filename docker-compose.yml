@@ -1,0 +1,144 @@
+version: '3.8'
+
+services:
+  # 1. The Gateway Router
+  gateway:
+    build: ./loadbalancer
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/cachedb
+    depends_on:
+      node1:
+        condition: service_healthy
+      node2:
+        condition: service_healthy
+      node3:
+        condition: service_healthy
+      node4:
+        condition: service_healthy
+      node5:
+        condition: service_healthy
+      node6:
+        condition: service_healthy
+      mongodb:
+        condition: service_started
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  k6:
+    image: grafana/k6:latest
+    volumes:
+      - ./benchmark:/scripts
+    command: run /scripts/benchmark.js
+    depends_on:
+      gateway:
+        condition: service_started
+    network_mode: host
+
+  # 2. Cache Node 1
+  node1:
+    build: ./cachenode
+    container_name: distributedcache-node1-1
+    environment:
+      - SERVER_PORT=8081
+      - CACHE_EVICTION_STRATEGY=lru
+      - CACHE_MAX_SIZE=1000
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8081/api/v1/cache/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 3. Cache Node 2
+  node2:
+    build: ./cachenode
+    container_name: distributedcache-node2-1
+    environment:
+      - SERVER_PORT=8082
+      - CACHE_EVICTION_STRATEGY=lru
+      - CACHE_MAX_SIZE=1000
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8082/api/v1/cache/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 4. Cache Node 3
+  node3:
+    build: ./cachenode
+    container_name: distributedcache-node3-1
+    environment:
+      - SERVER_PORT=8083
+      - CACHE_EVICTION_STRATEGY=lfu
+      - CACHE_MAX_SIZE=1000
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8083/api/v1/cache/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 5. Cache Node 4
+  node4:
+    build: ./cachenode
+    container_name: distributedcache-node4-1
+    environment:
+      - SERVER_PORT=8084
+      - CACHE_EVICTION_STRATEGY=lru
+      - CACHE_MAX_SIZE=2000
+    ports:
+      - "8084:8084"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8084/api/v1/cache/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 6. Cache Node 5
+  node5:
+    build: ./cachenode
+    container_name: distributedcache-node5-1
+    environment:
+      - SERVER_PORT=8085
+      - CACHE_EVICTION_STRATEGY=lfu
+      - CACHE_MAX_SIZE=2000
+    ports:
+      - "8085:8085"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8085/api/v1/cache/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 7. Cache Node 6
+  node6:
+    build: ./cachenode
+    container_name: distributedcache-node6-1
+    environment:
+      - SERVER_PORT=8086
+      - CACHE_EVICTION_STRATEGY=lfu
+      - CACHE_MAX_SIZE=2000
+    ports:
+      - "8086:8086"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8086/api/v1/cache/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 5. MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
