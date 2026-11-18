@@ -1,4 +1,5 @@
 # Distributed Caching System
+[![CI](https://github.com/sridharganji2712/Distributed-Caching-System/actions/workflows/ci.yml/badge.svg)](https://github.com/sridharganji2712/Distributed-Caching-System/actions/workflows/ci.yml)
 
 A horizontally scalable, in-memory distributed cache built with **Spring Boot**. A gateway routes every request to one of several cache nodes using **consistent hashing**, each node evicts entries with a pluggable **LRU / LFU** policy, and writes are persisted to **MongoDB** asynchronously so data survives restarts. A **React dashboard** visualizes the cluster, and the whole system runs on **Docker Compose** or **Kubernetes**.
 
